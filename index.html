@@ -5,72 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مولد قسم الأسئلة الشائعة</title>
     <style>
-        #faq-section {
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            text-align: right;
+        }
+        #faq-tool {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        #tool-header {
+            display: flex;
+            align-items: center;
             margin-bottom: 20px;
         }
-        .input-box {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid rgba(110, 90, 255, 0.6);
-            border-radius: 5px;
+        #tool-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #6e5aff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            margin-left: 15px;
+            box-shadow: 0 4px 10px rgba(110, 90, 255, 0.3);
+        }
+        #tool-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
+        }
+        .input-box {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
         }
         .input-box:focus {
             border-color: #6e5aff;
+            box-shadow: 0 0 5px rgba(110, 90, 255, 0.5);
             outline: none;
         }
         .action-btn {
+            padding: 12px 20px;
             background-color: #6e5aff;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(110, 90, 255, 0.3);
         }
         .action-btn:hover {
-            background-color: #bd3057;
-        }
-        .add-more-text {
-            color: #6e5aff;
-            font-size: 14px;
+            background-color: #ff7c7c;
+            transform: scale(1.05);
         }
         #generatedCodeSection {
             margin-top: 20px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         textarea {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
             width: 100%;
+            height: 150px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+        }
+        textarea:focus {
+            border-color: #6e5aff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(110, 90, 255, 0.5);
+        }
+        .notification {
+            display: none;
+            background-color: #6e5aff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .notification.show {
+            display: block;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-<div id="faq-section">
-    <label>السؤال:</label>
-    <input class="input-box" id="question1" placeholder="أدخل السؤال الأول" type="text" />
-    <br /><br />
-    <label>الإجابة:</label>
-    <input class="input-box" id="answer1" placeholder="أدخل الإجابة الأولى" type="text" />
-    <br /><br />
-    <button class="action-btn" id="addMoreBtn">+</button>
-    <span class="add-more-text">أدخل المزيد من الأسئلة</span>
-    <br /><br />
+<div id="faq-tool">
+    <div id="tool-header">
+        <div id="tool-icon">💡</div>
+        <div id="tool-title">مولد قسم الأسئلة الشائعة</div>
+    </div>
+    <div id="faq-section">
+        <div class="input-group">
+            <input type="text" id="question1" class="input-box" placeholder="أدخل السؤال الأول">
+        </div>
+        <div class="input-group">
+            <input type="text" id="answer1" class="input-box" placeholder="أدخل الإجابة الأولى">
+        </div>
+    </div>
+    <button class="action-btn" id="addMoreBtn">+ أضف سؤالاً جديدًا</button>
 </div>
 
 <div id="generatedCodeSection">
-    <h3>الكود النهائي:</h3>
-    <textarea id="outputCode" rows="10"></textarea>
-    <br />
+    <h3>الكود الناتج:</h3>
+    <textarea id="outputCode" readonly></textarea>
     <button class="action-btn" onclick="generateCode()">توليد الكود</button>
     <button class="action-btn" onclick="copyCode()">نسخ الكود</button>
+    <div class="notification" id="copyNotification">تم نسخ الكود بنجاح!</div>
 </div>
 
 <script>
@@ -78,50 +151,46 @@
 
     function addNewQuestion() {
         questionCount++;
-
         const faqSection = document.getElementById('faq-section');
-        const newQuestionHTML = `
-            <label for="question${questionCount}">السؤال:</label>
+        const newInput = `
+        <div class="input-group">
             <input type="text" id="question${questionCount}" class="input-box" placeholder="أدخل السؤال ${questionCount}">
-            <br><br>
-            <label for="answer${questionCount}">الإجابة:</label>
+        </div>
+        <div class="input-group">
             <input type="text" id="answer${questionCount}" class="input-box" placeholder="أدخل الإجابة ${questionCount}">
-            <br><br>
+        </div>
         `;
-
-        faqSection.insertAdjacentHTML('beforeend', newQuestionHTML);
+        faqSection.insertAdjacentHTML('beforeend', newInput);
     }
 
     document.getElementById('addMoreBtn').addEventListener('click', addNewQuestion);
 
     function generateCode() {
-        let output = `<section itemscope itemprop="mainEntity" itemtype="https://schema.org/FAQPage">\n<h2>FAQ</h2>\n`;
-
+        let output = `<section itemscope itemtype="https://schema.org/FAQPage">\n`;
         for (let i = 1; i <= questionCount; i++) {
-            const question = document.getElementById(`question${i}`).value;
-            const answer = document.getElementById(`answer${i}`).value;
-
-            if (question.trim() !== "" && answer.trim() !== "") {
+            const question = document.getElementById(`question${i}`).value.trim();
+            const answer = document.getElementById(`answer${i}`).value.trim();
+            if (question && answer) {
                 output += `
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
       <h3 itemprop="name">${question}</h3>
       <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-          <div itemprop="text"><p>${answer}</p></div>
+          <p itemprop="text">${answer}</p>
       </div>
   </div>\n`;
             }
         }
-
         output += `</section>`;
-
-        document.getElementById("outputCode").value = output;
+        document.getElementById('outputCode').value = output;
     }
 
     function copyCode() {
-        const codeText = document.getElementById("outputCode");
+        const codeText = document.getElementById('outputCode');
         codeText.select();
-        document.execCommand("copy");
-        alert("تم نسخ الكود بنجاح!");
+        document.execCommand('copy');
+        const notification = document.getElementById('copyNotification');
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
     }
 </script>
 
